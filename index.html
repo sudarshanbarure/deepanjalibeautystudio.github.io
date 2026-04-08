@@ -1051,35 +1051,50 @@
 <a href="https://wa.me/919284368601?text=Hi!%20I'd%20like%20to%20book%20an%20appointment%20at%20Deepanjali%20Hair%20and%20Makeup%20Artist." target="_blank" class="wa-float" title="Chat on WhatsApp">💬</a>
 
 <script>
-// Custom Cursor
+// =============================
+// CUSTOM CURSOR
+// =============================
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
-});
-function animateRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a, button, .service-card, .testi-card, .social-link').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.width = '20px'; cursor.style.height = '20px';
-    ring.style.width = '52px'; ring.style.height = '52px';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.width = '10px'; cursor.style.height = '10px';
-    ring.style.width = '34px'; ring.style.height = '34px';
-  });
-});
 
-// Scroll reveal
+if (cursor && ring) {
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .service-card, .testi-card, .social-link').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      ring.style.width = '52px';
+      ring.style.height = '52px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      ring.style.width = '34px';
+      ring.style.height = '34px';
+    });
+  });
+}
+
+// =============================
+// SCROLL REVEAL
+// =============================
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
@@ -1089,77 +1104,17 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
 reveals.forEach(el => observer.observe(el));
 
-// ── CONFIG: Paste your Google Apps Script Web App URL below ──
-const APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
-
-// Form submit → Google Sheets + Email notification
-async function submitForm() {
-  const name    = document.getElementById('fname').value.trim();
-  const phone   = document.getElementById('fphone').value.trim();
-  const email   = document.getElementById('femail').value.trim();
-  const service = document.getElementById('fservice').value;
-  const date    = document.getElementById('fdate').value;
-  const message = document.getElementById('fmessage').value.trim();
-
-  if (!name || !phone || !service) {
-    showFormError('Please fill in your name, phone number, and select a service.');
-    return;
-  }
-
-  const btn = document.querySelector('.form-submit');
-  btn.disabled = true;
-  btn.textContent = 'Sending… ⏳';
-  btn.style.opacity = '0.7';
-
-  const payload = { name, phone, email, service, date, message,
-    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) };
-
-  try {
-    if (APPS_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-      // Demo mode — show success without real submission
-      await new Promise(r => setTimeout(r, 1200));
-      showSuccess();
-      return;
-    }
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    showSuccess();
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = 'Send Query ✦';
-    btn.style.opacity = '1';
-    showFormError('Something went wrong. Please try WhatsApp or call us directly.');
-  }
-}
-
-function showSuccess() {
-  document.getElementById('formSuccess').style.display = 'block';
-  document.getElementById('formError').style.display = 'none';
-  const btn = document.querySelector('.form-submit');
-  btn.textContent = '✓ Sent!';
-  btn.style.background = '#4caf50';
-  // clear fields
-  ['fname','fphone','femail','fservice','fdate','fmessage'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function showFormError(msg) {
-  const el = document.getElementById('formError');
-  el.textContent = '⚠ ' + msg;
-  el.style.display = 'block';
-}
-</script
- <script>
+// =============================
+// GOOGLE APPS SCRIPT URL
+// =============================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyA8YFVofpU29Swzy7j90ckDPTyEd9rrshJQnQJDaIQCylKNsLMBwTNh6a-R8eKg2bW/exec';
 
+// =============================
+// FORM SUBMIT FUNCTION
+// =============================
 async function submitForm() {
   const name = document.getElementById('fname')?.value.trim() || '';
   const phone = document.getElementById('fphone')?.value.trim() || '';
@@ -1170,18 +1125,23 @@ async function submitForm() {
 
   const successBox = document.getElementById('formSuccess');
   const errorBox = document.getElementById('formError');
+  const btn = document.querySelector('.form-submit');
 
+  // Hide old messages
   if (successBox) successBox.style.display = 'none';
   if (errorBox) errorBox.style.display = 'none';
 
+  // Validation
   if (!name || !phone || !service) {
-    if (errorBox) {
-      errorBox.innerText = 'Please fill Name, Phone Number and Service.';
-      errorBox.style.display = 'block';
-    } else {
-      alert('Please fill Name, Phone Number and Service.');
-    }
+    showError('Please fill Name, Phone Number and Service.');
     return;
+  }
+
+  // Button loading state
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.7';
   }
 
   const payload = {
@@ -1191,7 +1151,7 @@ async function submitForm() {
     service,
     date,
     message,
-    timestamp: new Date().toLocaleString('en-IN')
+    timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
   };
 
   try {
@@ -1199,43 +1159,67 @@ async function submitForm() {
       method: 'POST',
       body: JSON.stringify(payload),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain;charset=utf-8'
       }
     });
 
     const result = await response.json();
 
     if (result.status === 'ok') {
-      if (successBox) {
-        successBox.style.display = 'block';
-      } else {
-        alert('Query submitted successfully!');
+      if (successBox) successBox.style.display = 'block';
+
+      // Clear form
+      document.getElementById('fname').value = '';
+      document.getElementById('fphone').value = '';
+      document.getElementById('femail').value = '';
+      document.getElementById('fservice').value = '';
+      document.getElementById('fdate').value = '';
+      document.getElementById('fmessage').value = '';
+
+      if (btn) {
+        btn.textContent = '✓ Sent!';
+        btn.style.background = '#4caf50';
       }
 
-      if (document.getElementById('fname')) document.getElementById('fname').value = '';
-      if (document.getElementById('fphone')) document.getElementById('fphone').value = '';
-      if (document.getElementById('femail')) document.getElementById('femail').value = '';
-      if (document.getElementById('fservice')) document.getElementById('fservice').value = '';
-      if (document.getElementById('fdate')) document.getElementById('fdate').value = '';
-      if (document.getElementById('fmessage')) document.getElementById('fmessage').value = '';
+      successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      if (errorBox) {
-        errorBox.innerText = 'Something went wrong: ' + result.message;
-        errorBox.style.display = 'block';
-      } else {
-        alert('Error: ' + result.message);
-      }
+      showError('Something went wrong: ' + (result.message || 'Unknown error'));
+      resetButton();
     }
   } catch (error) {
-    console.error(error);
-    if (errorBox) {
-      errorBox.innerText = 'Failed to send query. Please try again.';
-      errorBox.style.display = 'block';
-    } else {
-      alert('Failed to send query. Please try again.');
-    }
+    console.error('Form Error:', error);
+    showError('Failed to send query. Please try again.');
+    resetButton();
+  }
+}
+
+// =============================
+// SHOW ERROR
+// =============================
+function showError(msg) {
+  const errorBox = document.getElementById('formError');
+  if (errorBox) {
+    errorBox.innerText = '⚠ ' + msg;
+    errorBox.style.display = 'block';
+  } else {
+    alert(msg);
+  }
+}
+
+// =============================
+// RESET BUTTON
+// =============================
+function resetButton() {
+  const btn = document.querySelector('.form-submit');
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = 'Send Query ✦';
+    btn.style.opacity = '1';
+    btn.style.background = '';
   }
 }
 </script>
+</body>
+</html>
 </body>
 </html>
